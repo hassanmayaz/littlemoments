@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Friendship ♡</title>
+
+    <style>
+      :root {
+        --bg: #10131c;
+        --card: #1b2030;
+        --text: #f5f5fa;
+        --muted: #aab0c3;
+        --accent: #a99bff;
+        --border: #34394c;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: Arial, sans-serif;
+        line-height: 1.7;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .container {
+        width: min(1050px, 92%);
+        margin: auto;
+      }
+
+      /* Navigation */
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 20px 4%;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .logo {
+        color: var(--accent);
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a:hover {
+        color: var(--accent);
+      }
+
+      /* Hero */
+      .hero {
+        text-align: center;
+        padding: 100px 0 85px;
+      }
+
+      .hero .eyebrow {
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-size: 0.8rem;
+      }
+
+      h1 {
+        font-size: clamp(2.5rem, 7vw, 5rem);
+        line-height: 1.1;
+        margin: 18px 0;
+      }
+
+      .hero p {
+        color: var(--muted);
+        max-width: 600px;
+        margin: 0 auto 25px;
+      }
+
+      .button {
+        display: inline-block;
+        padding: 12px 22px;
+        background: var(--accent);
+        color: #111323;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .button:hover {
+        transform: translateY(-3px);
+      }
+
+      /* Sections */
+      section {
+        padding: 65px 0;
+      }
+
+      .section-heading {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .section-heading h2 {
+        font-size: clamp(1.8rem, 5vw, 2.7rem);
+        margin-bottom: 8px;
+      }
+
+      .section-heading p {
+        color: var(--muted);
+      }
+
+      /* Image gallery */
+      .gallery {
+        columns: 3 230px;
+        column-gap: 18px;
+      }
+
+      .photo {
+        display: block;
+        width: 100%;
+        margin: 0 0 18px;
+        break-inside: avoid;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+        background: var(--card);
+        padding: 0;
+        color: var(--text);
+        cursor: pointer;
+        text-align: left;
+        transition:
+          transform 0.2s,
+          border-color 0.2s;
+      }
+
+      .photo:hover {
+        transform: translateY(-4px);
+        border-color: var(--accent);
+      }
+
+      /*
+            IMAGES OF ANY SHAPE:
+            No fixed height or aspect ratio.
+            The entire image is displayed without cropping.
+          */
+      .photo img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .photo-caption {
+        padding: 12px 14px;
+      }
+
+      .photo-caption strong {
+        display: block;
+        margin-bottom: 3px;
+      }
+
+      .photo-caption span {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      /* Friendship message */
+      .message-card {
+        max-width: 700px;
+        margin: auto;
+        padding: 35px 25px;
+        text-align: center;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+      }
+
+      .message-card p {
+        color: var(--muted);
+        margin: 12px 0 22px;
+      }
+
+      #secret-message {
+        display: none;
+        color: var(--text);
+        margin-top: 22px;
+        white-space: pre-line;
+      }
+
+      #secret-message.show {
+        display: block;
+        animation: appear 0.4s ease;
+      }
+
+      @keyframes appear {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      footer {
+        padding: 30px 15px;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        color: var(--muted);
+      }
+
+      /* Full-size image popup */
+      .lightbox {
+        display: none;
+        position: fixed;
+        z-index: 100;
+        inset: 0;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.92);
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .lightbox.open {
+        display: flex;
+      }
+
+      .lightbox img {
+        display: block;
+        max-width: 95vw;
+        max-height: 78vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+      }
+
+      .lightbox p {
+        margin-top: 12px;
+        text-align: center;
+      }
+
+      .close-button {
+        position: absolute;
+        top: 15px;
+        right: 22px;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+      }
+
+      @media (max-width: 600px) {
+        nav {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .nav-links {
+          gap: 12px;
+          font-size: 0.9rem;
+        }
+
+        .hero {
+          padding: 70px 0;
+        }
+
+        .gallery {
+          columns: 2 140px;
+          column-gap: 10px;
+        }
+
+        .photo {
+          margin-bottom: 10px;
+          border-radius: 10px;
+        }
+
+        .photo-caption {
+          padding: 10px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .gallery {
+          columns: 1;
+        }
+      }
+
+      /* GET CAUGHT IN 4K */
+
+      #caught {
+        border-top: 1px solid var(--border);
+      }
+
+      .caught-card {
+        max-width: 780px;
+        margin: auto;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      .caught-badge {
+        padding: 12px 16px;
+        background: #fff000;
+        color: #111;
+        font-weight: 900;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+      }
+
+      .video-frame {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #050505;
+      }
+
+      .video-frame video {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 75vh;
+        object-fit: contain;
+      }
+
+      .caught-info {
+        padding: 20px;
+      }
+
+      .caught-label {
+        color: var(--accent);
+        font-size: 0.75rem;
+        font-weight: 900;
+        letter-spacing: 2px;
+      }
+
+      .caught-info h3 {
+        margin: 7px 0;
+        font-size: 1.5rem;
+      }
+
+      .caught-info p,
+      .caught-warning {
+        color: var(--muted);
+      }
+
+      .caught-warning {
+        text-align: center;
+        margin-top: 18px;
+        font-size: 0.86rem;
+      }
+
+      @media (max-width: 600px) {
+        .caught-card {
+          border-radius: 10px;
+        }
+
+        .caught-info {
+          padding: 15px;
+        }
+
+        .video-frame video {
+          max-height: 70vh;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navigation -->
+    <nav>
+      <a href="#home" class="logo">Best Friend™ — Batch No. 01 ♡</a>
+
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#memories">Memories</a>
+        <a href="#message">A Message</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero container" id="home">
+      <span class="eyebrow">A little corner of the internet</span>
+      <h1>
+        Some people make life <span style="color: var(--accent)">better.</span>
+      </h1>
+      <p>
+        This little website is dedicated to our friendship, the memories we have
+        made, and all the moments still to come.
+      </p>
+      <a href="#memories" class="button">See Our Memories ↓</a>
+    </header>
+
+    <!-- Image Gallery -->
+    <section id="memories">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Our Memories 📸</h2>
+          <p>Different moments, one friendship.</p>
+        </div>
+
+        <div class="gallery">
+          <!-- Replace these paths with your own photos -->
+          <button
+            class="photo"
+            type="button"
+            data-caption="One of our favorite moments"
+          >
+            <img
+              src="./images/img2.jpg"
+              alt="Friendship memory 1"
+              loading="lazy"
+            />
+            <div class="photo-caption">
+              <strong>Memory #1</strong>
+              <span
+                >Love this picture ❤️‍🩹, maybe coz I'm in bg😂. Main Charecter
+                Energy 🔥</span
+              >
+            </div>
+          </button>
+
+          <button
+            class="photo"
+            type="button"
+            data-caption="A moment worth remembering"
+          >
+            <img
+              src="images/img3.jpg"
+              alt="Friendship memory 2"
+              loading="lazy"
+            />
+            <div class="photo-caption">
+              <strong>Memory #2</strong>
+              <span>Muk tera kora sartenay🙂</span>
+            </div>
+          </button>
+
+          <button
+            class="photo"
+            type="button"
+            data-caption="Just us being ourselves"
+          >
+            <img
+              src="./images/img4.jpg"
+              alt="Friendship memory 3"
+              loading="lazy"
+            />
+            <div class="photo-caption">
+              <strong>Memory #3</strong>
+              <span>Same Same 😉</span>
+            </div>
+          </button>
+
+          <button
+            class="photo"
+            type="button"
+            data-caption="Another day, another story"
+          >
+            <img
+              src="./images/img5.jpg"
+              alt="Friendship memory 4"
+              loading="lazy"
+            />
+            <div class="photo-caption">
+              <strong>Memory #4</strong>
+              <span>Khef Khelat 😂</span>
+            </div>
+          </button>
+
+          <button
+            class="photo"
+            type="button"
+            data-caption="A memory that makes me smile"
+          >
+            <img
+              src="./images/img6.jpg"
+              alt="Friendship memory 5"
+              loading="lazy"
+            />
+            <div class="photo-caption">
+              <strong>Memory #5</strong>
+              <span>Madhobkundo Duo Trip 😭</span>
+            </div>
+          </button>
+
+          <button
+            class="photo"
+            type="button"
+            data-caption="More memories to come"
+          >
+            <img
+              src="./images/img7.jpg"
+              alt="Friendship memory 6"
+              loading="lazy"
+            />
+            <div class="photo-caption">
+              <strong>Memory #6</strong>
+              <span>Mulla oiyya birthday tuba tuba 😆</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Message -->
+    <section id="message">
+      <div class="container">
+        <div class="section-heading">
+          <h2>A Little Message 💌</h2>
+          <p>One thing I want you to know.</p>
+        </div>
+
+        <div class="message-card">
+          <h3>To My Best Friend</h3>
+          <p>You should know you're the biggest chutiya I ever met ♡ </p>
+
+          <button class="button" id="message-button" type="button">
+            Open My Message
+          </button>
+
+          <div id="secret-message" aria-live="polite">
+            Look, bro. I would write you a beautiful emotional paragraph, but
+            unfortunately, my keyboard doesn't support that much cringe. You're
+            annoying, weird, occasionally useful, and somehow still one of my
+            favorite humans. Don't let this compliment get to your head. Your
+            ego is already running on premium subscription. Anyway, thanks for
+            being my idiot. ❤️‍🔥💀 
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>Made with friendship and a little bit of HTML ♡</footer>
+
+    <!-- Image popup -->
+    <div
+      class="lightbox"
+      id="lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Photo preview"
+    >
+      <button
+        class="close-button"
+        id="close-lightbox"
+        type="button"
+        aria-label="Close photo"
+      >
+        ×
+      </button>
+      <img id="lightbox-image" src="" alt="" />
+      <p id="lightbox-caption"></p>
+    </div>
+
+    <script>
+      "use strict";
+
+      // Open the friendship message
+      const messageButton = document.getElementById("message-button");
+      const secretMessage = document.getElementById("secret-message");
+
+      messageButton.addEventListener("click", function () {
+        const isOpen = secretMessage.classList.toggle("show");
+
+        messageButton.textContent = isOpen
+          ? "Close Message ↑"
+          : "Open My Message";
+
+        messageButton.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      // Image lightbox
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImage = document.getElementById("lightbox-image");
+      const lightboxCaption = document.getElementById("lightbox-caption");
+      const closeLightbox = document.getElementById("close-lightbox");
+
+      let previousFocus = null;
+
+      document.querySelectorAll(".photo").forEach(function (photo) {
+        photo.addEventListener("click", function () {
+          const image = photo.querySelector("img");
+
+          if (!image || !image.complete || image.naturalWidth === 0) {
+            alert("This image could not be loaded. Check the image path.");
+            return;
+          }
+
+          previousFocus = photo;
+          lightboxImage.src = image.src;
+          lightboxImage.alt = image.alt;
+          lightboxCaption.textContent =
+            photo.dataset.caption || image.alt || "";
+
+          lightbox.classList.add("open");
+          document.body.style.overflow = "hidden";
+          closeLightbox.focus();
+        });
+      });
+
+      function hideLightbox() {
+        lightbox.classList.remove("open");
+        document.body.style.overflow = "";
+        lightboxImage.src = "";
+
+        if (previousFocus) previousFocus.focus();
+      }
+
+      closeLightbox.addEventListener("click", hideLightbox);
+
+      lightbox.addEventListener("click", function (event) {
+        if (event.target === lightbox) {
+          hideLightbox();
+        }
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && lightbox.classList.contains("open")) {
+          hideLightbox();
+        }
+      });
+    </script>
+  </body>
+</html>
